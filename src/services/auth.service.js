@@ -2,7 +2,7 @@ import axios from "axios";
 import jwt from 'jsonwebtoken';
 axios.defaults.withCredentials = true;
 
-const API_URL = process.env.API_BASE_URL + "auth/";
+const API_URL = process.env.REACT_APP_API_BASE_URL + "auth/";
 
 class AuthService {
     login(username, password) {

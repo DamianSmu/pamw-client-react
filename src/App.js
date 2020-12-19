@@ -14,6 +14,8 @@ import Logout from "./components/logout.component";
 import authService from "./services/auth.service";
 
 
+
+
 function PrivateRoute ({component: Component, ...rest}) {
   var authed = authService.isUserLoggedIn()
   return (
@@ -30,6 +32,8 @@ function PrivateRoute ({component: Component, ...rest}) {
 class App extends Component {
   render() {
     var isUserLoggedIn = authService.isUserLoggedIn();
+    const API_URL = process.env.REACT_APP_API_BASE_URL
+    console.log(API_URL)
     return (
         <div className="container">
           <Router>

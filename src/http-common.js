@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default axios.create({
     withCredentials: true,
-    baseURL: "http://localhost:8080",
+    baseURL: "https://pamw-damian-smugorzewski-api.herokuapp.com/api/",
     headers: {
         "Content-type": "application/json"
     }
