@@ -53,9 +53,12 @@ export default class Dashboard extends Component {
 
     getAllParcels() {
         parcelService.getAll().then(response => {
-            this.setState({
-                parcelList: response._embedded.parcelList
-            });
+            if(response._embedded != null)
+            {
+                this.setState({
+                    parcelList: response._embedded.parcelList
+                });
+        }
         });
     }
 
@@ -87,6 +90,10 @@ export default class Dashboard extends Component {
             case 'CREATED':
                 statusString = "Utworzona"
                 break;
+            default:
+                statusString = "UNDEFINED"
+                break;
+            
         }
         return (
             <div className="card card-outline-danger">
@@ -96,7 +103,7 @@ export default class Dashboard extends Component {
                             <h5>Id: {id}</h5>
                         </div>
                         <div className="col">
-                            {status == "CREATED" && (<button type="button" className="close" aria-label="Close" value={id} onClick={(e) => this.deleteParcel(id)} >
+                            {status === "CREATED" && (<button type="button" className="close" aria-label="Close" value={id} onClick={(e) => this.deleteParcel(id)} >
                                 <span aria-hidden="true">&times;</span>
                             </button>)}
                         </div>

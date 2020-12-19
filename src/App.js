@@ -31,7 +31,7 @@ function PrivateRoute ({component: Component, ...rest}) {
 }
 class App extends Component {
   render() {
-    var isUserLoggedIn = authService.isUserLoggedIn();
+    authService.isUserLoggedIn();
     const API_URL = process.env.REACT_APP_API_BASE_URL
     console.log(API_URL)
     return (
