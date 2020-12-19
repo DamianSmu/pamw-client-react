@@ -2,5 +2,7 @@
 build:
   docker:
     web: Dockerfile
+  config:
+    REACT_APP_API_URL: https://pamw-damian-smugorzewski-api.herokuapp.com/api/
 run:
   web: serve -l $PORT -s build
