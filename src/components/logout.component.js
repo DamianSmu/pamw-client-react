@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import authService from '../services/auth.service'
+import LogoutButton from "./authLogout.component";
 
 class Logout extends Component {
     constructor(props) {
+       
         super(props)
 
         this.state = {
@@ -11,6 +13,9 @@ class Logout extends Component {
             redirect: false
         }
     }
+
+   
+
     componentDidMount() {
         authService.logout()
         if (window.localStorage.getItem('user') == null) {
@@ -23,6 +28,7 @@ class Logout extends Component {
     render() {
         return (
             <div className="container content">
+                <LogoutButton></LogoutButton>
                 {this.state.removed &&
                     <div className="alert alert-success" role="alert">
                         Wylogowano poprawnie.

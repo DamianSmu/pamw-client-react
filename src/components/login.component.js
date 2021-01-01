@@ -3,6 +3,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 
 import AuthService from "../services/auth.service";
+import LoginButton from "./authLoginButton.component";
+
 
 const required = value => {
     if (!value) {
@@ -57,7 +59,7 @@ export default class Login extends Component {
             },
             error => {
                 var resMessage = ""
-                if (error.response.status === 401) { 
+                if (error && error.response && error.response.status === 401) { 
                     resMessage = "Nieprawidłowa nazwa użytkownika lub hasło." 
                 }
                 else {
@@ -78,6 +80,7 @@ export default class Login extends Component {
         return (
             <div className="container content">
                 <div className="row justify-content-lg-center">
+                    <LoginButton></LoginButton>
                     <div className="col-6">
                         <Form
                             onSubmit={this.handleLogin}

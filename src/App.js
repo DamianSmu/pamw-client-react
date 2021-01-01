@@ -12,7 +12,7 @@ import HeaderComponent from "./components/header.component";
 import FooterComponent from "./components/footer.component";
 import Logout from "./components/logout.component";
 import authService from "./services/auth.service";
-
+import Profile from "./components/profile.component"
 
 
 
@@ -44,6 +44,7 @@ class App extends Component {
                 <PrivateRoute path = "/dashboard" component = {Dashboard}/>
                 <Route path = "/signup" component = {Signup}/>
                 <Route path = "/logout" component = {Logout}/>
+                <Route path = "/profile" component = {Profile}/>
               </Switch>
             <FooterComponent />
           </Router>
