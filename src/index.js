@@ -8,9 +8,9 @@ ReactDOM.render(
     
     <BrowserRouter>
         <Auth0Provider
-        domain="dev-5ieroany.eu.auth0.com"
-        clientId="1AxkKNnC0Lowxdfb4qheBYo1bdD6k6nN"
-        redirectUri="https://localhost:9090/login"
+        domain= {process.env.REACT_APP_DOMAIN}
+        clientId= {process.env.REACT_APP_CLIENT_ID}
+        redirectUri= {process.env.REACT_APP_REDIRECT_URI}
        >
             <App />
          </Auth0Provider>
