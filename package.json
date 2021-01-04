@@ -6,6 +6,7 @@
     "@auth0/auth0-react": "^1.2.0",
     "@auth0/auth0-spa-js": "^1.13.5",
     "@mars/heroku-js-runtime-env": "^3.0.2",
+    "@stomp/stompjs": "^6.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -18,8 +19,10 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
+    "react-toasts": "^3.0.6",
     "react-token-auth": "^1.1.7",
     "react-validation": "^3.0.7",
+    "stompjs": "^2.3.3",
     "validator": "^13.1.17",
     "web-vitals": "^0.2.4"
   },

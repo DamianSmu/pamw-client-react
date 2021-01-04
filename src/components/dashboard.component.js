@@ -3,8 +3,12 @@ import parcelService from "../services/parcel.service";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import _ from 'lodash';
+import { withAuth0 } from '@auth0/auth0-react';
+import authService from "../services/auth.service";
+import WebsocketService from "../services/socket.service"
+import {ToastsContainer, ToastsStore} from 'react-toasts';
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
     constructor(props) {
         super(props);
 
@@ -13,11 +17,13 @@ export default class Dashboard extends Component {
         this.onChangePostOffice = this.onChangePostOffice.bind(this);
         this.onChangeSize = this.onChangeSize.bind(this);
 
+        this.webSocketGreetingsSubscribeEndpoint = '/topic/greetings';
         this.state = {
             parcelList: "",
             receiver: "",
             postOffice: "",
             size: "",
+            parcelsLoaded: false,
         };
     }
 
@@ -53,23 +59,57 @@ export default class Dashboard extends Component {
 
     getAllParcels() {
         parcelService.getAll().then(response => {
-            if(response._embedded != null)
-            {
+            if (response._embedded != null) {
                 this.setState({
-                    parcelList: response._embedded.parcelList
+                    parcelList: response._embedded.parcelList,
+                    parcelsLoaded: true
                 });
-        }
+            }
         });
     }
 
     componentDidMount() {
-        this.getAllParcels();
+        if (authService.isUserLoggedIn() && !this.state.parcelsLoaded) {
+            this.getAllParcels();
+            this.webSocket();
+        }
+    }
+
+    webSocket(){
+        this.webSocketService = WebsocketService.getInstance();
+        this.webSocketService.connect(
+            () => {
+                this.webSocketService &&
+                    this.webSocketService.subscribe(
+                        "/user/queue/reply",
+                        message => {
+                            if (message.body) {
+                                console.log('Received WS message: ', message.body);
+                                ToastsStore.success( <h6>{message.body}</h6>,5000);
+                                this.getAllParcels();
+
+                            } else {
+                                console.warn('Received empty message', message);
+                            }
+                        }
+                    );
+            },
+            () => { },
+            () => { }
+        );
     }
 
     deleteParcel(id) {
         parcelService.deleteParcel(id).then(r => {
             this.getAllParcels();
         });
+    }
+
+    renderToasts(){
+        return <div>
+        {ToastsStore.success("Hey, you just clicked!")}
+        <ToastsContainer store={ToastsStore}/>
+    </div>
     }
 
     renderParcel(id, receiver, postOffice, size, status) {
@@ -93,7 +133,7 @@ export default class Dashboard extends Component {
             default:
                 statusString = "UNDEFINED"
                 break;
-            
+
         }
         return (
             <div className="card card-outline-danger">
@@ -118,6 +158,25 @@ export default class Dashboard extends Component {
             </div>
         );
     };
+    componentDidUpdate() {
+        const { user, isAuthenticated, isLoading } = this.props.auth0;
+        const { getAccessTokenSilently } = this.props.auth0;
+        if (!isLoading && isAuthenticated && !this.state.parcelsLoaded) {
+            getAccessTokenSilently({
+                audience: process.env.REACT_APP_AUDIENCE
+            }).then(token => {
+                localStorage.setItem("token", JSON.stringify("Bearer " + token));
+                if (user !== undefined) {
+                    localStorage.setItem("user", JSON.stringify(user));
+                }
+                this.getAllParcels();
+                this.webSocket();
+            }).catch(e => { });
+            const event = document.createEvent('Event');
+            event.initEvent('storageChanged', true, true);
+            document.dispatchEvent(event);
+        }
+    }
 
     renderFormParcel() {
         return (
@@ -180,14 +239,19 @@ export default class Dashboard extends Component {
     }
 
     render() {
+        const { isLoading } = this.props.auth0;
         return (
             <div className="container content">
                 <h3>Twoje przesyłki:</h3>
+                {isLoading && (<div>Autoryzacja Auth0</div>)}
                 {this.renderParcels()}
                 {this.renderFormParcel()}
+                <ToastsContainer store={ToastsStore}/>
             </div>
 
         )
 
     }
 }
+
+export default withAuth0(Dashboard);

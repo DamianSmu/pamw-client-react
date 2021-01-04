@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import authService from '../services/auth.service'
 import LogoutButton from "./authLogout.component";
+import { withAuth0 } from '@auth0/auth0-react';
 
 class Logout extends Component {
     constructor(props) {
@@ -14,10 +15,10 @@ class Logout extends Component {
         }
     }
 
-   
-
     componentDidMount() {
         authService.logout()
+        const { logout } = this.props.auth0;
+        logout({ returnTo: window.location.origin })
         if (window.localStorage.getItem('user') == null) {
             this.setState({
                 removed: true,
@@ -46,4 +47,4 @@ class Logout extends Component {
     }
 }
 
-export default Logout
+export default withAuth0(Logout)

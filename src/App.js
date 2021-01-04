@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import { Redirect } from 'react-router'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -12,28 +11,10 @@ import HeaderComponent from "./components/header.component";
 import FooterComponent from "./components/footer.component";
 import Logout from "./components/logout.component";
 import authService from "./services/auth.service";
-import Profile from "./components/profile.component"
 
-
-
-function PrivateRoute ({component: Component, ...rest}) {
-  var authed = authService.isUserLoggedIn()
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        return authed === true
-          ? <Component {...props} /> 
-          : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
-      }}
-    />
-  )
-}
 class App extends Component {
   render() {
     authService.isUserLoggedIn();
-    const API_URL = process.env.REACT_APP_API_BASE_URL
-    console.log(API_URL)
     return (
         <div className="container">
           <Router>
@@ -41,19 +22,15 @@ class App extends Component {
               <Switch>
                 <Route path = "/" exact component = {Start}/>
                 <Route path = "/login" component = {Login}/>
-                {/* <PrivateRoute path = "/dashboard" component = {Dashboard}/> */}
                 <Route path = "/dashboard" component = {Dashboard}/>
                 <Route path = "/signup" component = {Signup}/>
                 <Route path = "/logout" component = {Logout}/>
-                <Route path = "/profile" component = {Profile}/>
               </Switch>
             <FooterComponent />
           </Router>
         </div>
-
           );
   }
 }
-
 
 export default App;

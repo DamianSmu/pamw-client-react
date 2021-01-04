@@ -109,8 +109,6 @@ export default class Register extends Component {
             message: "",
             loading: false
         };
-
-
     }
 
     onChangeFirstName(e) {
@@ -252,7 +250,6 @@ export default class Register extends Component {
                                             validations={[required, vusername, vusernameAvailable]}
                                         />
                                     </div>
-
                                     <div className="form-group">
                                         <label htmlFor="email">Email</label>
                                         <Input
@@ -264,7 +261,6 @@ export default class Register extends Component {
                                             validations={[required, email]}
                                         />
                                     </div>
-
                                     <div className="form-group">
                                         <label htmlFor="password">Hasło</label>
                                         <Input

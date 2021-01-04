@@ -12,6 +12,7 @@ class AuthService {
             password
         }).then(response => {
             if (response.data) {
+                localStorage.setItem("token", JSON.stringify("MyBearer " + response.data.accessToken));
                 localStorage.setItem("user", JSON.stringify(response.data));
             }
 
@@ -21,6 +22,7 @@ class AuthService {
     }
 
     logout() {
+        window.localStorage.removeItem('token')
         window.localStorage.removeItem('user')
     }
 
@@ -36,7 +38,7 @@ class AuthService {
     }
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));;
+        return JSON.parse(localStorage.getItem('token'));;
     }
 
     getLoginAvailability(value){
@@ -52,9 +54,17 @@ class AuthService {
 
     isUserLoggedIn(){
         var isUserLoggedIn = false;
-        const userData = JSON.parse(localStorage.getItem('user'));
-        if(userData !== null){
-            const token = userData.accessToken;
+        var token = JSON.parse(localStorage.getItem('token'));
+        var user = JSON.parse(localStorage.getItem('user'));
+        if(token !== null && user !== null){
+            if(token.startsWith("Bearer ")){
+                token = token.substr(7)
+            } else if(token.startsWith("MyBearer ")){
+                token = token.substr(9)
+            } else {
+                return isUserLoggedIn;
+            }
+
             var decodedToken=jwt.decode(token, {complete: true});
             var dateNow = new Date();
             if(decodedToken.payload.exp > (dateNow.getTime() / 1000)){

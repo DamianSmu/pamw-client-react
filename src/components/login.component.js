@@ -80,7 +80,6 @@ export default class Login extends Component {
         return (
             <div className="container content">
                 <div className="row justify-content-lg-center">
-                    <LoginButton></LoginButton>
                     <div className="col-6">
                         <Form
                             onSubmit={this.handleLogin}
@@ -124,6 +123,7 @@ export default class Login extends Component {
                                     <span>Zaloguj</span>
                                 </button>
                             </div>
+                                
                             {this.state.message && (
                                 <div className="form-group">
                                     <div className="alert alert-danger" role="alert">
@@ -132,6 +132,7 @@ export default class Login extends Component {
                                 </div>
                             )}
                         </Form>
+                        <LoginButton></LoginButton>
                     </div>
                 </div>
             </div>

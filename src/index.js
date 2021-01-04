@@ -1,21 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { Auth0Provider } from "@auth0/auth0-react";
+import Auth0ProviderWithHistory from "./auth0-provider-with-history"
 import App from "./App";
 
-ReactDOM.render(
-    
+ReactDOM.render(  
     <BrowserRouter>
-        <Auth0Provider
-        domain= {process.env.REACT_APP_DOMAIN}
-        clientId= {process.env.REACT_APP_CLIENT_ID}
-        redirectUri= {process.env.REACT_APP_REDIRECT_URI}
-       >
-            <App />
-         </Auth0Provider>
+        <Auth0ProviderWithHistory>
+      <App />
+    </Auth0ProviderWithHistory>
     </BrowserRouter>,
     document.getElementById("root")
 );
-
-
