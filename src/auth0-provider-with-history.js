@@ -18,7 +18,6 @@ const Auth0ProviderWithHistory = ({ children }) => {
             redirectUri={process.env.REACT_APP_REDIRECT_URI}
             audience={"https://" + process.env.REACT_APP_DOMAIN + "/api/v2/"}
             scope="openid profile name email"
-            response_type='token id_token'
         >
             {children}
         </Auth0Provider>
