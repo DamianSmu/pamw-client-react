@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import authService from '../services/auth.service'
+import socketService from '../services/socket.service'
 import LogoutButton from "./authLogout.component";
 import { withAuth0 } from '@auth0/auth0-react';
 
@@ -17,6 +18,7 @@ class Logout extends Component {
 
     componentDidMount() {
         authService.logout()
+        socketService.getInstance().disconnect();
         const { logout } = this.props.auth0;
         logout({ returnTo: window.location.origin })
         if (window.localStorage.getItem('user') == null) {
